@@ -75,12 +75,38 @@ int main() {
     }
     
     // a. Ordenar por la cantidad de goles
+    // Se crea una copia ordenada por goles de los jugadores
+    int cant_goleadores = 0;
     for(int i = 0; i < cant_jugadores; i++){
-        for(int j = 0; j < cant_jugaadores; i++){
-            if()
+        int posAgregar = 0; // Posicion del arreglo donde se guardara el jugador
+        for(int j = 0; j < cant_goleadores; j++){ // se compara el nuevo jugador con los que ya estan guardados y ordenados
+            if(jugadores[i].goles > ordenGoles[j].goles){
+                posAgregar = j; // Guardo esta posicion para guardar el jugador
+                for(int k = cant_goleadores; k > j; k--){ //Se mueven todos los elementos hacia fondo del arreglo
+                    ordenGoles[k] = ordenGoles[k - 1];
+                }
+            }
         }
-    }    
-
+        ordenGoles[posAgregar] = jugadores[i]; //Se guarda el jugador
+    }
+    
+    //Se muestra los jugadores ordenados por goles
+    for (int i = 0; i < cant_jugadores; i++) {
+        printf()
+        printf("Nombre y apellido: %s\n", jugadores[i].NyA);
+        printf("Número de camiseta: %d\n", jugadores[i].nro);
+        printf("Goles totales: %d\n", jugadores[i].goles);
+        printf("Pases acertados: %d\n", jugadores[i].pasesOk);
+        printf("Pases totales: %d\n", jugadores[i].pasesTot);
+        printf("Minutos totales: %d\n", jugadores[i].minutosTotales);
+        if(jugadores[i].posicion == 'a'){
+            printf("Posicion: %s\n\n", "arquero");
+        }
+        if(jugadores[i].posicion == 'j'){
+            printf("Posicion: %s\n\n", "jugador");
+        }
+        
+    }
     printf("¡Fin del programa!\n");
 
     return 0;
