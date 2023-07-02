@@ -17,7 +17,7 @@ int main() {
     struct jugador jugadores[MAX_JUGADORES];
     struct jugador ordenGoles[MAX_JUGADORES];
     struct jugador ordenEfectividad[MAX_JUGADORES];
-    
+    struct jugador aux; // jugador auxiliar que se utiliza para realizar el intercambio en el ordenamiento.
     int cant_jugadores = 0;
 
     while (cant_jugadores < MAX_JUGADORES) {
@@ -57,56 +57,73 @@ int main() {
     }
 
     printf("\nJugadores ingresados:\n");
-
+    printf("|   Nro   |   Nombre y apellido   |   Camiseta    |   Goles   |   Pases OK   |    Pases Totales    |   Minutos Totales    |    Posision   |\n");
     for (int i = 0; i < cant_jugadores; i++) {
-        printf("Nombre y apellido: %s\n", jugadores[i].NyA);
-        printf("Número de camiseta: %d\n", jugadores[i].nro);
-        printf("Goles totales: %d\n", jugadores[i].goles);
-        printf("Pases acertados: %d\n", jugadores[i].pasesOk);
-        printf("Pases totales: %d\n", jugadores[i].pasesTot);
-        printf("Minutos totales: %d\n", jugadores[i].minutosTotales);
-        if(jugadores[i].posicion == 'a'){
-            printf("Posicion: %s\n\n", "arquero");
-        }
-        if(jugadores[i].posicion == 'j'){
-            printf("Posicion: %s\n\n", "jugador");
-        }
         
+        char posicion[10];
+        if(jugadores[i].posicion == 'a'){
+            strcpy(posicion, "Arquero");
+        }
+        else{
+            strcpy(posicion, "Jugador");
+        }
+        printf("|   %d   |   %s   |   %d   |   %d   |   %d   |   %d   |   %d   |   %s   |\n", i + 1, jugadores[i].NyA, jugadores[i].nro, jugadores[i].goles, jugadores[i].pasesOk, jugadores[i].pasesTot, jugadores[i].minutosTotales, posicion);
     }
     
     // a. Ordenar por la cantidad de goles
-    // Se crea una copia ordenada por goles de los jugadores
-    int cant_goleadores = 0;
+    //Se crea una copia de los jugadores en ordenGoles
+    
     for(int i = 0; i < cant_jugadores; i++){
-        int posAgregar = 0; // Posicion del arreglo donde se guardara el jugador
-        for(int j = 0; j < cant_goleadores; j++){ // se compara el nuevo jugador con los que ya estan guardados y ordenados
-            if(jugadores[i].goles > ordenGoles[j].goles){
-                posAgregar = j; // Guardo esta posicion para guardar el jugador
-                for(int k = cant_goleadores; k > j; k--){ //Se mueven todos los elementos hacia fondo del arreglo
-                    ordenGoles[k] = ordenGoles[k - 1];
-                }
+        ordenGoles[i] = jugadores[i];
+    }
+    
+    //Se ordena utilizando burbuja
+    for(int j = 0; j < cant_jugadores - 1; j++){
+        for(int k = j + 1; k < cant_jugadores; k++){
+            if(ordenGoles[j].goles < ordenGoles[k].goles)
+            {
+                aux = ordenGoles[j];
+                ordenGoles[j] = ordenGoles[k];
+                ordenGoles[k] = aux;
             }
         }
-        ordenGoles[posAgregar] = jugadores[i]; //Se guarda el jugador
     }
     
     //Se muestra los jugadores ordenados por goles
-    for (int i = 0; i < cant_jugadores; i++) {
-        printf()
-        printf("Nombre y apellido: %s\n", jugadores[i].NyA);
-        printf("Número de camiseta: %d\n", jugadores[i].nro);
-        printf("Goles totales: %d\n", jugadores[i].goles);
-        printf("Pases acertados: %d\n", jugadores[i].pasesOk);
-        printf("Pases totales: %d\n", jugadores[i].pasesTot);
-        printf("Minutos totales: %d\n", jugadores[i].minutosTotales);
-        if(jugadores[i].posicion == 'a'){
-            printf("Posicion: %s\n\n", "arquero");
-        }
-        if(jugadores[i].posicion == 'j'){
-            printf("Posicion: %s\n\n", "jugador");
-        }
-        
+    printf("\nTabla de Goleadores\n");
+    printf("|   Nro   |   Nombre y apellido   |   Goles   |\n");
+    
+    for (int i = 0; i < cant_jugadores && i < 5; i++) {
+        printf("|   %d   |   %s   |   %d   |\n", i + 1, ordenGoles[i].NyA, ordenGoles[i].goles);
     }
+    
+    // b. Ordenar por la efectividad
+    //Se crea una copia de los jugadores en ordenGoles
+    
+    for(int i = 0; i < cant_jugadores; i++){
+        ordenEfectividad[i] = jugadores[i];
+    }
+    
+    //Se ordena utilizando burbuja
+    for(int j = 0; j < cant_jugadores - 1; j++){
+        for(int k = j + 1; k < cant_jugadores; k++){
+            if(ordenEfectividad[j].pasesOk / (ordenEfectividad[j].pasesTot * 100) < ordenEfectividad[k].pasesOk / (ordenEfectividad[k].pasesTot * 100))
+            {
+                aux = ordenEfectividad[j];
+                ordenEfectividad[j] = ordenEfectividad[k];
+                ordenEfectividad[k] = aux;
+            }
+        }
+    }
+    
+    //Se muestra los jugadores ordenados por efectividad de pases
+    printf("\nTabla de Goleadores\n");
+    printf("|   Nro   |   Nombre y apellido   |   Pases Ok   |    pases Totales    |\n");
+    
+    for (int i = 0; i < cant_jugadores && i < 5; i++) {
+        printf("|   %d   |   %s   |   %d   |    %d     |\n", i + 1, ordenEfectividad[i].NyA, ordenEfectividad[i].pasesOk, ordenEfectividad[i].pasesTot);
+    }
+    
     printf("¡Fin del programa!\n");
 
     return 0;
