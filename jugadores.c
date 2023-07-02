@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdio_ext.h>
 
 #define MAX_JUGADORES 35
 
@@ -25,7 +26,8 @@ int main() {
 
     while (cant_jugadores < MAX_JUGADORES) {
         printf("Ingrese nombre y apellido (o 'fin' para salir): ");
-        fgets(jugadores[cant_jugadores].NyA, sizeof(jugadores[cant_jugadores].NyA), stdin);
+        __fpurge(stdin);
+        fgets(jugadores[cant_jugadores].NyA, 50, stdin);
         jugadores[cant_jugadores].NyA[strcspn(jugadores[cant_jugadores].NyA, "\n")] = '\0';  // Eliminar el carácter de nueva línea
 
         if (strcmp(jugadores[cant_jugadores].NyA, "fin") == 0) {
@@ -34,27 +36,22 @@ int main() {
 
         printf("Ingrese el numero de camiseta: ");
         scanf("%d", &jugadores[cant_jugadores].nro);
-        getchar();
         
         printf("Ingrese goles totales: ");
         scanf("%d", &jugadores[cant_jugadores].goles);
-        getchar();
         
         printf("Ingrese cantidad de pases acertados: ");
         scanf("%d", &jugadores[cant_jugadores].pasesOk);
-        getchar();
         
         printf("Ingrese cantidad de pases totales: ");
         scanf("%d", &jugadores[cant_jugadores].pasesTot);
-        getchar();
         
         printf("Ingrese minutos totales: ");
         scanf("%d", &jugadores[cant_jugadores].minutosTotales);
-        getchar();
         
         printf("Ingrese la posicion del jugador: ");
+        __fpurge(stdin);
         scanf("%c", &jugadores[cant_jugadores].posicion);
-        getchar();
 
         cant_jugadores++;
     }
@@ -101,7 +98,7 @@ int main() {
     }
     
     // b. Ordenar por la efectividad
-    //Se crea una copia de los jugadores en ordenGoles
+    //Se crea una copia de los jugadores en ordenEfectividad
     
     for(int i = 0; i < cant_jugadores; i++){
         ordenEfectividad[i] = jugadores[i];
@@ -110,7 +107,9 @@ int main() {
     //Se ordena utilizando burbuja
     for(int j = 0; j < cant_jugadores - 1; j++){
         for(int k = j + 1; k < cant_jugadores; k++){
-            if(ordenEfectividad[j].pasesOk / (ordenEfectividad[j].pasesTot * 100) < ordenEfectividad[k].pasesOk / (ordenEfectividad[k].pasesTot * 100))
+            float efectividad_1 = (float)(ordenEfectividad[j].pasesOk) / ordenEfectividad[j].pasesTot * 100;
+            float efectividad_2 = (float)(ordenEfectividad[k].pasesOk) / ordenEfectividad[k].pasesTot * 100;
+            if(efectividad_1 < efectividad_2)
             {
                 aux = ordenEfectividad[j];
                 ordenEfectividad[j] = ordenEfectividad[k];
@@ -120,7 +119,7 @@ int main() {
     }
     
     //Se muestra los jugadores ordenados por efectividad de pases
-    printf("\nTabla de Goleadores\n");
+    printf("\nTabla de efectividad\n");
     printf("|   Nro   |   Nombre y apellido   |   Pases Ok   |    pases Totales    |\n");
     
     for (int i = 0; i < cant_jugadores && i < 5; i++) {
