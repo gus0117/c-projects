@@ -19,6 +19,9 @@ int main() {
     struct jugador ordenEfectividad[MAX_JUGADORES];
     struct jugador aux; // jugador auxiliar que se utiliza para realizar el intercambio en el ordenamiento.
     int cant_jugadores = 0;
+    int cant_goles = 0; // cantidad de goles que se realizaron en el torneo
+    int cant_arqueros = 0; // Cantidad de arquerso que hay en el torneo
+    int cant_goles_def = 0; // Cantidad de goles realizados por defensores (camisetas 2,3,4 y 6)
 
     while (cant_jugadores < MAX_JUGADORES) {
         printf("Ingrese nombre y apellido (o 'fin' para salir): ");
@@ -124,6 +127,23 @@ int main() {
         printf("|   %d   |   %s   |   %d   |    %d     |\n", i + 1, ordenEfectividad[i].NyA, ordenEfectividad[i].pasesOk, ordenEfectividad[i].pasesTot);
     }
     
+    // Punto C, D y E
+    //C => cant de goles; D => cant de arqueros; E => cant de goles por defensores (camisetas 2,3,4 y 6)
+    for(int i = 0; i < cant_jugadores; i++){
+        cant_goles += jugadores[i].goles;
+        
+        if(jugadores[i].posicion == 'a'){
+            cant_arqueros ++;
+        }
+        
+        //Se pregunta si es defensor y ademas si hizo goles
+        if((jugadores[i].nro == 2 || jugadores[i].nro == 3 || jugadores[i].nro == 4 || jugadores[i].nro == 6) && jugadores[i].goles > 0){
+            cant_goles_def += jugadores[i].goles; 
+        }
+    }
+    
+    printf("|   Goles Totales   |   Cantidad de arqueros   |   Goles cometidos por defensores   |\n");
+    printf("|        %d         |      %d       |       %d        |\n", cant_goles, cant_arqueros, cant_goles_def);
     printf("¡Fin del programa!\n");
 
     return 0;
